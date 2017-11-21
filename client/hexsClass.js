@@ -1,6 +1,7 @@
 
 class geoJsonClass{
-    constructor(hexs = {}, map) {
+    constructor(){}
+    addHexs(hexs = {}, map) {
         this.hexs = hexs; //features collections
         this.map = map;
         hexs.features.forEach((e,i)=>{ //checking if the futures list is ordered by pos
@@ -15,7 +16,7 @@ class geoJsonClass{
         'onEachFeature' : function(feature, layer){
             }
         }).addTo(map);
-        
+        this.popup = L.popup({maxWidth: 900, minWidth:500, maxHeight:400})
     }
     addData(data, fieldN = undefined){
         let possibleField = ""
@@ -23,25 +24,18 @@ class geoJsonClass{
             if(e != "pos") possibleField = e
         })
         let fieldName = fieldN || possibleField
+        let fieldInData = possibleField
+        console.log(fieldName, )
         data.forEach((e,i) =>{
             let pos = e.pos
-            this.hexs.features[pos].properties[fieldName] = e[fieldName]
+            this.hexs.features[pos].properties[fieldName] = e[fieldInData]
         });
     }
     console(){
         console.log(this.hexs);
     }
     hexOnClick(e){ 
-        let feature = e.target.feature
-        let lngLat = [e.latlng.lng, e.latlng.lat]
-        let pos =  this.findClosestPoint(lngLat)[0].pos
-        let feat =  this.hexs.features[pos]
-        let strPopUp = stringPopUp(feat, [this.showedQuantity], [this.showedTime]);
-        this.popup = L.popup()
-        .setLatLng(e.latlng)
-        .setContent(strPopUp)
-        .openOn(this.map);
-        console.log("click", feature.geometry.properties.value, feat.properties[this.showedQuantity][this.showedTime])
+        openPopup(this, e)
     }
     enableClick(){
         let that = this;

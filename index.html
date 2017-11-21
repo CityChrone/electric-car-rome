@@ -23,6 +23,7 @@ crossorigin=""></script>
 <script src="lib/rbush.js"> </script>
 <script src="lib/knn.js"> </script>
 <script src="lib/jszip-utils.js"> </script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
@@ -113,6 +114,7 @@ crossorigin=""></script>
 	    	layers: [tileLayers['here']],
 	    	attributionControl:true,
 	      zoomSnap:1,
+	      scrollWheelZoom:true,
 	    	//zoomDelta:0.2,
 	    	//zoomSnap:0.2,
 	    	//inertia:false
@@ -120,23 +122,15 @@ crossorigin=""></script>
 
 	L.control.layers(tileLayers).addTo(mymap);
 
-	var hexs = {};
+	var hexs = new geoJsonClass()
 
-	loadZips();
+	loadZips(hexs);
 
 	var legend = makeLegend();
 	legend.addTo(mymap)
 
-	var controllers = makeControllers();
-	controllers.addTo(mymap)
+	var controllers = makeControllers(mymap, hexs);
 
-	/*setTimeout(function(){
-		console.log("ddddoonnnneeee")
-		$('.selectpicker').selectpicker({
-		  style: 'btn-info',
-		  size: 4
-	});}
-		,2000);*/
 </script>
 
 </body>
