@@ -14,7 +14,7 @@ function showData(hexs){
     let m = parseInt($('#min').val()) / 20 ;
     let tLayer = h * 3 + m;
     let quantity = field2Quantity[$('#layers').val()]
-    //console.log(hexs)
+    //console.log("show data", hexs, quantity)
     if(quantity == "pop"){
         hexs.showData(quantity)
     } else{
@@ -36,7 +36,7 @@ function makeControllers(map, hexs){
             <select class="selectpicker" id="layers">\
             <option>Parked</option>\
             <option>Charging</option>\
-            <option>Resident</option>\
+            <option>Residents</option>\
             </select> <br>'
 
 
