@@ -1,11 +1,20 @@
-var stringPopUp = function(feat, quantities, times, type = "default"){
-	let stringToPass = ""
+var stringPopUpTime = function(feat, quantities, times, type = "default"){
+	let stringToPass = "<div class='text'>"
 	quantities.forEach((q,i)=>{
-		stringToPass += q + " " + String(feat.properties[q][times[i]]) + "\n";
+		console.log(q,i, )
+		stringToPass += quantity2Field[q] + " = " + String(feat.properties[q][times]) + "</div>";
 	})
-	stringToPass +=  '<div id="plotPopup"></div>'
 	return stringToPass
 }
+
+var stringPopUp = function(feat, quantities, type = "default"){
+	let stringToPass = "<div class='text'>"
+	quantities.forEach((q,i)=>{
+		stringToPass += q + " = " + String(feat.properties[q].toFixed(0)) + "</div>";
+	})
+	return stringToPass
+}
+
 
 var popupEvent = function(hexs, feat){
 	console.log(feat)
@@ -33,9 +42,9 @@ var popupEvent = function(hexs, feat){
 			var data = [ trace1, trace2 ];
 
 			var layout = {
-			  title:'Temporal Line',
+			  title:'Cars in the hexagon area during the day',
   			  autosize: false,
-  			  width: 400,
+  			  width: 500,
   			  height: 300,
   			  margin: {
 			    l: 50,
@@ -64,7 +73,9 @@ var openPopup = function(hexs, e){
         let lngLat = [e.latlng.lng, e.latlng.lat]
         let pos =  hexs.findClosestPoint(lngLat)[0].pos
         let feat =  hexs.hexs.features[pos]
-        let strPopUp = stringPopUp(feat, [hexs.showedQuantity], [hexs.showedTime]);
+        let strPopUp = stringPopUpTime(feat, ["homeCharging", "parked_cars"], [hexs.showedTime]);
+        strPopUp += stringPopUp(feat, ["pop"]);
+        strPopUp +=  '<div id="plotPopup"></div>'
         popupEvent(hexs, feat);
         hexs.popup.setLatLng(e.latlng)
         .setContent(strPopUp).openOn(hexs.map);

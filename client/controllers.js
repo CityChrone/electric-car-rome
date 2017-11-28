@@ -1,17 +1,26 @@
-let toFieldQuantity = {
+var field2Quantity = {
     'Parked' : 'parked_cars',
     'Charging' : 'homeCharging',
-    'Resident' : 'resident'
+    'Residents' : 'pop'
 }
 
-function showTemporalData(hexs){
+var quantity2Field = {}
+for(k in field2Quantity){
+    quantity2Field[field2Quantity[k]] = k
+};
+
+function showData(hexs){
     let h = parseInt($('#hours').val());
     let m = parseInt($('#min').val()) / 20 ;
     let tLayer = h * 3 + m;
-    let quantity = toFieldQuantity[$('#layers').val()]
-    console.log(hexs)
-    hexs.showTemporalData(quantity, tLayer)
-    console.log(h,m, tLayer);
+    let quantity = field2Quantity[$('#layers').val()]
+    //console.log(hexs)
+    if(quantity == "pop"){
+        hexs.showData(quantity)
+    } else{
+        hexs.showTemporalData(quantity, tLayer)
+    }
+    //console.log(h,m, tLayer);
 }
 
 function makeControllers(map, hexs){
@@ -66,14 +75,14 @@ function makeControllers(map, hexs){
     console.log("make controller", hexs)
 
     $('#layers').change(function (e) {
-        showTemporalData(hexs);
+        showData(hexs);
     });
 
     $('#hours').change(function (e) {
-        showTemporalData(hexs);
+        showData(hexs);
     });
     $('#min').change(function (e) {
-        showTemporalData(hexs);
+        showData(hexs);
     });
 
     return selectors;

@@ -16,7 +16,7 @@ class geoJsonClass{
         'onEachFeature' : function(feature, layer){
             }
         }).addTo(map);
-        this.popup = L.popup({maxWidth: 900, minWidth:500, maxHeight:400})
+        this.popup = L.popup({maxWidth: 900, minWidth:500, maxHeight:400, autoPanPaddingTopLeft:[100,300]})
     }
     addData(data, fieldN = undefined){
         let possibleField = ""
@@ -25,7 +25,7 @@ class geoJsonClass{
         })
         let fieldName = fieldN || possibleField
         let fieldInData = possibleField
-        console.log(fieldName, )
+        console.log(fieldName)
         data.forEach((e,i) =>{
             let pos = e.pos
             this.hexs.features[pos].properties[fieldName] = e[fieldInData]
@@ -52,17 +52,19 @@ class geoJsonClass{
     }
     updateGeojson(){
     }
-    showData(quantity = "parked_cars", shell = shellDefault, map = this.map){
+    showData(quantity = "pop", shell = shellDefault, map = this.map){
         this.geojson.clearLayers();
         this.showedQuantity = quantity;
-        let hexsShelled = shellify(this.hexs.features, quantity, time, shell)
-        console.log("hexsShelled", hexsShelled)
+        let hexsShelled = shellify(this.hexs.features, quantity, shell)
+        console.log("hexsShelled", hexsShelled, quantity)
         for(let value in hexsShelled) {
             let hexsShell = hexsShelled[value]
             let unionShellHexs = unionHexs(hexsShell)
+            unionShellHexs.properties["value"] = parseFloat(value)
             this.geojson.addData(unionShellHexs)
         }
         this.enableClick()
+        this.setStyle(quantity, shell);
     }
     showTemporalData(quantity = "parked_cars", time = 8*3, shell = shellDefault, map = this.map){
         this.geojson.clearLayers();

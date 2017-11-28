@@ -31,7 +31,7 @@ let returnColorFunc = function(shell = shellDefault, colorList = colorDefaultLis
 const styleGeojson = function(colorFunc) {
     return function(feature){
         let val = feature.geometry.properties.value
-        //console.log(val, feature)
+        console.log(val, feature)
         let opacity = 0.5;
         let color = colorFunc(val);
         if (color ==null) opacity = 0;
